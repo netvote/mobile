@@ -3,7 +3,7 @@ import {Events, NavController, Platform, MenuController} from "ionic-angular";
 import {Splashscreen} from "ionic-native";
 import {LoginComponent, LogoutComponent} from "../pages/auth/auth";
 import {AwsUtil} from "../providers/aws.service";
-import {ControlPanelComponent} from "../pages/controlpanel/controlpanel";
+import {VoterBallotListPage} from "../pages/voter-ballot-list/voter-ballot-list";
 
 
 @Component({
@@ -12,9 +12,9 @@ import {ControlPanelComponent} from "../pages/controlpanel/controlpanel";
 export class MyApp {
   @ViewChild(NavController) navCtrl;
   public loginPage = LoginComponent;
-  public homePage = ControlPanelComponent;
+  public homePage = VoterBallotListPage;
   public logoutPage = LogoutComponent;
-  public settingsPage = ControlPanelComponent;
+  public settingsPage = VoterBallotListPage;
 
   public rootPage:any;
 

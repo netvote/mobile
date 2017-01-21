@@ -17,7 +17,7 @@ import {
   ForgotPasswordStep1Component,
   ForgotPasswordStep2Component
 } from "../pages/auth/auth";
-import {ControlPanelComponent} from "../pages/controlpanel/controlpanel";
+import {VoterBallotListPage} from "../pages/voter-ballot-list/voter-ballot-list";
 import {Storage} from "@ionic/storage";
 import {EventsService} from "../providers/events.service";
 
@@ -31,7 +31,7 @@ import {EventsService} from "../providers/events.service";
     ResendCodeComponent,
     ForgotPasswordStep1Component,
     ForgotPasswordStep2Component,
-    ControlPanelComponent
+    VoterBallotListPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -46,7 +46,7 @@ import {EventsService} from "../providers/events.service";
     ResendCodeComponent,
     ForgotPasswordStep1Component,
     ForgotPasswordStep2Component,
-    ControlPanelComponent
+    VoterBallotListPage
   ],
   providers: [CognitoUtil,
     AwsUtil,

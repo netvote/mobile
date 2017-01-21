@@ -7,7 +7,7 @@ import {
   LoggedInCallback,
   RegistrationUser
 } from "../../providers/cognito.service";
-import {ControlPanelComponent} from "../controlpanel/controlpanel";
+import {VoterBallotListPage} from "../voter-ballot-list/voter-ballot-list";
 import {EventsService} from "../../providers/events.service";
 
 @Component({
@@ -47,8 +47,8 @@ export class LoginComponent implements CognitoCallback, LoggedInCallback {
       this.doAlert("Error", message);
       console.log("result: " + message);
     } else { //success
-      console.log("Redirect to ControlPanelComponent");
-      this.nav.setRoot(ControlPanelComponent);
+      console.log("Redirect to VoterBallotListPage");
+      this.nav.setRoot(VoterBallotListPage);
     }
   }
 
@@ -56,7 +56,7 @@ export class LoginComponent implements CognitoCallback, LoggedInCallback {
     console.log("The user is logged in: " + isLoggedIn);
     if (isLoggedIn) {
       this.eventService.sendLoggedInEvent();
-      this.nav.setRoot(ControlPanelComponent);
+      this.nav.setRoot(VoterBallotListPage);
     }
   }
 
