@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-
+import {VoteService} from "../../providers/vote.service";
 /*
   Generated class for the VoterBallot page.
 
@@ -13,7 +13,7 @@ import { NavController } from 'ionic-angular';
 })
 export class VoterBallotPage {
 
-  constructor(public navCtrl: NavController) {}
+  constructor(public navCtrl: NavController, public voteService: VoteService) {}
 
   ionViewDidLoad() {
     console.log('Hello VoterBallotPage Page');

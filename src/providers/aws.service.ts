@@ -55,13 +55,9 @@ export class AwsUtil {
     let mythis = this;
     if (isLoggedIn) {
       console.log("User is logged in");
-      this.cUtil.getIdToken({
-        callback() {
-        },
-        callbackWithParam(idToken:any) {
-          console.log("idJWT Token: " + idToken);
-          mythis.addCognitoCredentials(idToken);
-        }
+      this.cUtil.getIdToken().then((idToken:any) =>{
+        console.log("idJWT Token: " + idToken);
+        mythis.addCognitoCredentials(idToken);
       });
       console.log("Retrieving the id token");
     }

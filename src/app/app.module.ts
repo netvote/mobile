@@ -20,6 +20,7 @@ import {
 import {VoterBallotListPage} from "../pages/voter-ballot-list/voter-ballot-list";
 import {Storage} from "@ionic/storage";
 import {EventsService} from "../providers/events.service";
+import {VoteService} from "../providers/vote.service";
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import {EventsService} from "../providers/events.service";
     UserLoginService,
     UserParametersService,
     UserRegistrationService,
+    VoteService,
     Storage,
     EventsService]
 })
