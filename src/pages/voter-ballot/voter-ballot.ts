@@ -29,7 +29,7 @@ export class VoterBallotPage {
     })
   }
 
-  castVoteDisabled(){
+  isVoteDisabled(){
     for(var decision of this.decisions){
       if(this.voterDecisions[decision.Id] === undefined){
         return true;
