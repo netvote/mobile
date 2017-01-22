@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { VoteService } from "../../providers/vote.service";
+import { VoterBallotPage } from "../voter-ballot/voter-ballot";
+
 
 /*
   Generated class for the VoterBallotList page.
@@ -26,8 +28,10 @@ export class VoterBallotListPage {
     })
   }
 
-  openBallot(id){
-    //TODO: open ballot decisions page
+  openBallot(ballot:any){
+    this.navCtrl.push(VoterBallotPage, {
+      "ballot": ballot
+    })
   }
 
 }

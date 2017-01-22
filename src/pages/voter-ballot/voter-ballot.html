@@ -7,12 +7,22 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>voterBallot</ion-title>
+    <ion-title>{{ ballot.Name }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+  <ion-list>
+    <ion-item *ngFor="let decision of decisions;" [hidden]="decisions.length == 0">
+      <ion-label>{{ decision.Name }}</ion-label>
+      <ion-select [(ngModel)]="voterDecisions[decision.Id]" cancelText="Cancel" okText="Ok">
+        <ion-option *ngFor="let opt of decision.Options" value="{{opt.Id}}">{{ opt.Name }}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  <button ion-button [disabled]="castVoteDisabled()" block>
+    Cast Vote
+  </button>
 </ion-content>

@@ -21,6 +21,7 @@ import {VoterBallotListPage} from "../pages/voter-ballot-list/voter-ballot-list"
 import {Storage} from "@ionic/storage";
 import {EventsService} from "../providers/events.service";
 import {VoteService} from "../providers/vote.service";
+import {VoterBallotPage} from "../pages/voter-ballot/voter-ballot";
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {VoteService} from "../providers/vote.service";
     ResendCodeComponent,
     ForgotPasswordStep1Component,
     ForgotPasswordStep2Component,
-    VoterBallotListPage
+    VoterBallotListPage,
+    VoterBallotPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -47,7 +49,8 @@ import {VoteService} from "../providers/vote.service";
     ResendCodeComponent,
     ForgotPasswordStep1Component,
     ForgotPasswordStep2Component,
-    VoterBallotListPage
+    VoterBallotListPage,
+    VoterBallotPage
   ],
   providers: [CognitoUtil,
     AwsUtil,

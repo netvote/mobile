@@ -26,27 +26,17 @@
 <!-- Logged in menu -->
 <ion-menu id="loggedInMenu" [content]="content">
   <ion-toolbar>
-    <ion-title>Pages</ion-title>
+    <ion-title>NetVote</ion-title>
   </ion-toolbar>
   <ion-content>
-    <ion-list>
-      <ion-list-header>
-        Account
-      </ion-list-header>
-      <button ion-item (click)="openPage(settingsPage)">
-        <ion-icon item-left name="home"></ion-icon>
-        Settings
-      </button>
-
-    </ion-list>
 
     <ion-list>
       <ion-list-header>
-        Navigation
+        Voter
       </ion-list-header>
       <button ion-item (click)="openPage(homePage)">
-        <ion-icon item-left name="home"></ion-icon>
-        Home
+        <ion-icon item-left name="checkmark-circle"></ion-icon>
+        Ballots
       </button>
 
       <button ion-item (click)="openPage(logoutPage)">

@@ -8,6 +8,9 @@
 
     <ion-navbar>
         <ion-title>Ballots</ion-title>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
     </ion-navbar>
 
 </ion-header>
@@ -26,7 +29,7 @@
         </ion-card-content>
         <ion-row no-padding>
             <ion-col>
-                <button ion-button clear small color="danger" icon-left>
+                <button (click)="openBallot(ballot)" ion-button clear small color="danger" icon-left>
                     <ion-icon name='checkmark-circle'></ion-icon>
                     Vote
                 </button>
