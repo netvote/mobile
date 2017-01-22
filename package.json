@@ -1,7 +1,7 @@
 {
-  "name": "aws-cognito-ionic2",
-  "author": "Vladimir Budilov",
-  "homepage": "http://budilov.com/",
+  "name": "netvote",
+  "author": "Steven Landers",
+  "homepage": "http://netvote.com/",
   "private": true,
   "scripts": {
     "build": "ionic-app-scripts build",

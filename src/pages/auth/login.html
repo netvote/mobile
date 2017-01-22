@@ -8,7 +8,7 @@
 <ion-content>
   <ion-list>
 <ion-item>
-  <img src="/assets/img/eagle.jpg"/>
+  <img src="http://wallpapercave.com/wp/vNgIG1X.jpg"/>
 </ion-item>
     <ion-item>
       <ion-label floating>Email</ion-label>
@@ -21,7 +21,7 @@
     </ion-item>
 
     <ion-item>
-      <button ion-button block large (click)="signMeIn()">Sign in</button>
+      <button ion-button block large (click)="signMeIn()" [disabled]="isSignInDisabled()">Sign in</button>
     </ion-item>
 
   </ion-list>

@@ -33,6 +33,10 @@ export class LoginComponent implements CognitoCallback, LoggedInCallback {
     this.userService.isAuthenticated(this);
   }
 
+  isSignInDisabled(){
+    return (this.email === undefined || this.password === undefined || this.email == "" || this.password == "");
+  }
+
   signMeIn() {
     console.log("in onLogin");
     if (this.email == null || this.password == null) {
@@ -86,6 +90,7 @@ export class LoginComponent implements CognitoCallback, LoggedInCallback {
 export class LogoutComponent implements LoggedInCallback {
 
   constructor(public navCtrl:NavController, public userService:UserLoginService) {
+    console.log("LogoutComponent constructor")
     this.userService.isAuthenticated(this)
   }
 

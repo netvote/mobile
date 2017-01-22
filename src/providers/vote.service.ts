@@ -14,23 +14,12 @@ export const MOCK_BALLOT_LIST = [{
     "Description": "What sort of holiday party should we have?",
     "Image": "http://static.wixstatic.com/media/4552e2_d9cc379ee64243459ec53df68105b1f5~mv2.png"
 },
-    {
-        "Id": "ba0d6eee-6f45-4a0c-b3f7-2f8659b72c2b",
-        "Name": "2017 Eagle Club Election",
-        "Description": "Choose our president, vice president, and chief eagle handler.",
-        "Image": "/assets/img/eagle.jpg"
-    }, {
-        "Id": "ba0d6eee-6f45-4a0c-b3f7-2f8659b72c2b",
-        "Name": "Holiday Party",
-        "Description": "What sort of holiday party should we have?",
-        "Image": "http://static.wixstatic.com/media/4552e2_d9cc379ee64243459ec53df68105b1f5~mv2.png"
-    },
-    {
-        "Id": "ba0d6eee-6f45-4a0c-b3f7-2f8659b72c2b",
-        "Name": "2017 Eagle Club Election",
-        "Description": "Choose our president, vice president, and chief eagle handler.",
-        "Image": "/assets/img/eagle.jpg"
-    }];
+{
+    "Id": "ba0d6eee-6f45-4a0c-b3f7-2f8659b72c2b",
+    "Name": "2017 Eagle Club Election",
+    "Description": "Choose our president, vice president, and chief eagle handler.",
+    "Image": "http://wallpapercave.com/wp/vNgIG1X.jpg"
+}];
 
 export const MOCK_BALLOT_DECISIONS = [{
     "Id": "favorite-color",
@@ -95,18 +84,26 @@ export class VoteService {
 
     getVoterBallots(): Promise<any> {
         return new Promise((resolve, reject) => {
-            resolve(MOCK_BALLOT_LIST);
+            setTimeout(() => {
+                resolve(MOCK_BALLOT_LIST);
+            }, 1000);
         });
     }
 
     getVoterBallotDecisions(id): Promise<any> {
         return new Promise((resolve, reject) => {
-            resolve(MOCK_BALLOT_DECISIONS);
+            setTimeout(() => {
+                resolve(MOCK_BALLOT_DECISIONS);
+            }, 1000);
         });
     }
 
-    castVote(vote) {
-
+    castVote(vote): Promise<any> {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(true);
+            }, 1000);
+        });
     }
 
     addVoterBallot(id) {

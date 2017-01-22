@@ -22,7 +22,7 @@
       </ion-select>
     </ion-item>
   </ion-list>
-  <button ion-button [disabled]="isVoteDisabled()" block>
+  <button ion-button (click)="castVote()" [disabled]="isVoteDisabled()" block>
     Cast Vote
   </button>
 </ion-content>
