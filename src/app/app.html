@@ -11,9 +11,31 @@
         Ballots
       </button>
 
-      <button ion-item (click)="openPage(logoutPage)">
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header>
+        Admin
+      </ion-list-header>
+      <button ion-item (click)="openPage(homePage)">
+        <ion-icon item-left name="color-wand"></ion-icon>
+        Manage Ballots
+      </button>
+      <button ion-item (click)="openPage(homePage)">
+        <ion-icon item-left name="stats"></ion-icon>
+        Reports
+      </button>
+
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header>
+        Account
+      </ion-list-header>
+
+      <button color="danger" ion-item (click)="openPage(logoutPage)">
         <ion-icon item-left name="log-out"></ion-icon>
-        Logout
+        Log Out
       </button>
 
     </ion-list>
