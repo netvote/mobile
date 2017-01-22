@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import {VoteService} from "../../providers/vote.service";
+import { VoteService } from "../../providers/vote.service";
 
 /*
   Generated class for the VoterBallotList page.
@@ -14,10 +14,20 @@ import {VoteService} from "../../providers/vote.service";
 })
 export class VoterBallotListPage {
 
+  ballots: any = [];
+
   constructor(public navCtrl: NavController, public voteService: VoteService) {}
 
   ionViewDidLoad() {
     console.log('Hello VoterBallotListPage Page');
+    this.voteService.getVoterBallots().then((ballots) => {
+      this.ballots = ballots;
+      console.log("loaded ballots: "+this.ballots);
+    })
+  }
+
+  openBallot(id){
+    //TODO: open ballot decisions page
   }
 
 }

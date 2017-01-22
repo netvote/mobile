@@ -6,43 +6,43 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Ballots</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>Ballots</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content class="card-background-page">
-  <ion-card>
-  <img src="assets/img/eagle.jpg"/>
-  <ion-card-content>
-    <ion-card-title>
-      Favorite Color 
-      </ion-card-title>
-    <p>
-      We can't figure out what color to use.  Please help choose the color.
-    </p>
-  </ion-card-content>
-    <ion-row no-padding>
-      <ion-col>
-        <button ion-button clear small color="danger" icon-left>
-          <ion-icon name='checkmark-circle'></ion-icon>
-          Vote
-        </button>
-      </ion-col>
-      <ion-col text-center>
-        <button ion-button clear small color="danger" icon-left>
-          <ion-icon name='stats'></ion-icon>
-          Results 
-        </button>
-      </ion-col>
-      <ion-col text-right>
-        <button ion-button clear small color="danger" icon-left>
-          <ion-icon name='share-alt'></ion-icon>
-          Share
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-card>
+    <ion-card *ngFor="let ballot of ballots" [hidden]="ballots.length == 0">
+        <img src="{{ ballot.Image }}"/>
+        <ion-card-content>
+            <ion-card-title>
+                {{ ballot.Name }}
+            </ion-card-title>
+            <p>
+                {{ ballot.Description }}
+            </p>
+        </ion-card-content>
+        <ion-row no-padding>
+            <ion-col>
+                <button ion-button clear small color="danger" icon-left>
+                    <ion-icon name='checkmark-circle'></ion-icon>
+                    Vote
+                </button>
+            </ion-col>
+            <ion-col text-center>
+                <button ion-button clear small color="danger" icon-left>
+                    <ion-icon name='stats'></ion-icon>
+                    Results
+                </button>
+            </ion-col>
+            <ion-col text-right>
+                <button ion-button clear small color="danger" icon-left>
+                    <ion-icon name='share-alt'></ion-icon>
+                    Share
+                </button>
+            </ion-col>
+        </ion-row>
+    </ion-card>
 </ion-content>

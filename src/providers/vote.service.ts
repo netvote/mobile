@@ -79,12 +79,16 @@ export class VoteService {
     });
   }
 
-  getVoterBallots(callback){
-	callback(MOCK_BALLOT_LIST);
+  getVoterBallots(): Promise<any>{
+      return new Promise((resolve, reject) => {
+          resolve(MOCK_BALLOT_LIST);
+      });
   }
 
-  getVoterBallotDecisions(id, callback){
- 	callback(MOCK_BALLOT_DECISIONS); 
+  getVoterBallotDecisions(id): Promise<any>{
+      return new Promise((resolve, reject) => {
+          resolve(MOCK_BALLOT_DECISIONS);
+      });
   }
 
   castVote(vote){
