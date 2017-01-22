@@ -59,7 +59,6 @@ export class MyApp {
 
   enableMenu(loggedIn) {
     this.menu.enable(loggedIn, 'loggedInMenu');
-    this.menu.enable(!loggedIn, 'loggedOutMenu');
   }
 
 }

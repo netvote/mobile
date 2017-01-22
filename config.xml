@@ -55,4 +55,5 @@
   <plugin name="cordova-plugin-console" spec="~1.0.4"/>
   <plugin name="ionic-plugin-keyboard" spec="~2.2.1"/>
   <icon src="resources/ios/icon/icon-small@3x.png"/>
+  <allow-navigation href="http://192.168.1.68:8100"/>
 </widget>
