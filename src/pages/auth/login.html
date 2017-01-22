@@ -1,13 +1,15 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Login
+      Sign-In to Netvote
     </ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
   <ion-list>
-
+<ion-item>
+  <img src="/assets/img/eagle.jpg"/>
+</ion-item>
     <ion-item>
       <ion-label floating>Email</ion-label>
       <ion-input [(ngModel)]="email" type="email"></ion-input>
@@ -19,7 +21,7 @@
     </ion-item>
 
     <ion-item>
-      <button ion-button block outline large (click)="signMeIn()">Sign in</button>
+      <button ion-button block large (click)="signMeIn()">Sign in</button>
     </ion-item>
 
   </ion-list>
