@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
 import {Http, Headers, RequestOptions} from '@angular/http';
-import {_NETVOTE_API_ENDPOINT, _ENV_NAME} from "./properties.service";
+import {_NETVOTE_API_ENDPOINT, _ENV_NAME, _NETVOTE_API_KEY} from "./properties.service";
 import {CognitoUtil} from './cognito.service';
 /*
  Generated class for the VoteService provider.
@@ -64,6 +64,7 @@ export class VoteService {
                 let opt: RequestOptions
                 let myHeaders: Headers = new Headers
                 myHeaders.set('Authorization', idtoken);
+                myHeaders.set('x-api-key', _NETVOTE_API_KEY);
                 myHeaders.append('Content-type', 'application/json')
 
                 opt = new RequestOptions({

@@ -18,7 +18,7 @@
 
 <ion-content class="card-background-page">
     <ion-card *ngFor="let ballot of ballots" [hidden]="ballots.length == 0">
-        <img src="{{ ballot.Image }}"/>
+        <img src="{{ ballot.Image }}" [hidden]="ballot.Image == null || ballot.Image == ''"/>
         <ion-card-content>
             <ion-card-title>
                 {{ ballot.Name }}
