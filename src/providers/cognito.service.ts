@@ -169,33 +169,35 @@ export class UserLoginService {
         console.log("eventservice1: " + eventService);
     }
 
-    authenticate(username: string, password: string, callback: CognitoCallback) {
-        let mythis = this;
+    authenticate(username: string, password: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            let mythis = this;
 
-        // Need to provide placeholder keys unless unauthorised user access is enabled for user pool
-        AWSCognito.config.update({accessKeyId: 'anything', secretAccessKey: 'anything'})
+            // Need to provide placeholder keys unless unauthorised user access is enabled for user pool
+            AWSCognito.config.update({accessKeyId: 'anything', secretAccessKey: 'anything'})
 
-        let authenticationData = {
-            Username: username,
-            Password: password,
-        };
-        let authenticationDetails = new AWSCognito.CognitoIdentityServiceProvider.AuthenticationDetails(authenticationData);
+            let authenticationData = {
+                Username: username,
+                Password: password,
+            };
+            let authenticationDetails = new AWSCognito.CognitoIdentityServiceProvider.AuthenticationDetails(authenticationData);
 
-        let userData = {
-            Username: username,
-            Pool: this.cUtil.getUserPool()
-        };
+            let userData = {
+                Username: username,
+                Pool: this.cUtil.getUserPool()
+            };
 
-        console.log("Authenticating the user");
-        let cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
-        cognitoUser.authenticateUser(authenticationDetails, {
-            onSuccess: function (result) {
-                callback.cognitoCallback(null, result);
-                mythis.eventService.sendLoggedInEvent();
-            },
-            onFailure: function (err) {
-                callback.cognitoCallback(err.message, null);
-            },
+            console.log("Authenticating the user");
+            let cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+            cognitoUser.authenticateUser(authenticationDetails, {
+                onSuccess: function (result) {
+                    mythis.eventService.sendLoggedInEvent();
+                    resolve(result);
+                },
+                onFailure: function (err) {
+                    reject(err)
+                },
+            });
         });
     }
 
@@ -244,27 +246,26 @@ export class UserLoginService {
         this.eventService.sendLogoutEvent();
     }
 
-    isAuthenticated(callback: LoggedInCallback) {
-        if (callback == null)
-            throw("Callback in isAuthenticated() cannot be null");
+    isAuthenticated(): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            console.log("Getting the current user");
+            let cognitoUser = this.cUtil.getCurrentUser();
 
-        console.log("Getting the current user");
-        let cognitoUser = this.cUtil.getCurrentUser();
-
-        if (cognitoUser != null) {
-            cognitoUser.getSession(function (err, session) {
-                if (err) {
-                    console.log("Couldn't get the session: " + err, err.stack);
-                    callback.isLoggedInCallback(err, false);
-                }
-                else {
-                    console.log("Session is valid: " + session.isValid());
-                    callback.isLoggedInCallback(err, session.isValid());
-                }
-            });
-        } else {
-            callback.isLoggedInCallback("Can't retrieve the CurrentUser", false);
-        }
+            if (cognitoUser != null) {
+                cognitoUser.getSession(function (err, session) {
+                    if (err) {
+                        console.log("Couldn't get the session: " + err, err.stack);
+                        reject(err);
+                    }
+                    else {
+                        console.log("Session valid?: " + session.isValid());
+                        resolve(session.isValid());
+                    }
+                });
+            } else {
+                reject("user is null");
+            }
+        });
     }
 }
 

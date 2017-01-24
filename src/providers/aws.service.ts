@@ -36,10 +36,8 @@ export class AwsUtil {
 
     // First check if the user is authenticated already
     let mythis = this;
-    this.userLogin.isAuthenticated({
-      isLoggedInCallback(message:string, loggedIn:boolean) {
-        mythis.setupAWS(loggedIn);
-      }
+    this.userLogin.isAuthenticated().then((loggedIn) => {
+      mythis.setupAWS(loggedIn);
     });
   }
 

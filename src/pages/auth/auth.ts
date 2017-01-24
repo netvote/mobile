@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {NavController, NavParams, AlertController} from "ionic-angular";
+import {NavController, NavParams, AlertController, LoadingController} from "ionic-angular";
 import {
   UserRegistrationService,
   CognitoCallback,
@@ -13,7 +13,7 @@ import {EventsService} from "../../providers/events.service";
 @Component({
   templateUrl: 'login.html'
 })
-export class LoginComponent implements CognitoCallback, LoggedInCallback {
+export class LoginComponent implements LoggedInCallback {
   email:string;
   password:string;
 
@@ -21,7 +21,8 @@ export class LoginComponent implements CognitoCallback, LoggedInCallback {
               public navParam:NavParams,
               public alertCtrl:AlertController,
               public userService:UserLoginService,
-              public eventService:EventsService) {
+              public eventService:EventsService,
+              public loadingCtrl:LoadingController) {
     console.log("LoginComponent constructor");
     if (navParam != null && navParam.get("email") != null)
       this.email = navParam.get("email");
@@ -30,30 +31,40 @@ export class LoginComponent implements CognitoCallback, LoggedInCallback {
 
   ionViewLoaded() {
     console.log("Checking if the user is already authenticated. If so, then redirect to the secure site");
-    this.userService.isAuthenticated(this);
+    this.userService.isAuthenticated().then((isLoggedIn) => {
+      if(isLoggedIn){
+        this.loggedInHandler();
+      }
+    }).catch((err) => {
+      console.error(err);
+    });
   }
 
   isSignInDisabled(){
     return (this.email === undefined || this.password === undefined || this.email == "" || this.password == "");
   }
 
-  signMeIn() {
-    console.log("in onLogin");
-    if (this.email == null || this.password == null) {
-      this.doAlert("Error", "All fields are required");
-      return;
-    }
-    this.userService.authenticate(this.email, this.password, this);
+  loggedInHandler(){
+    this.eventService.sendLoggedInEvent();
+    this.nav.setRoot(VoterBallotListPage);
   }
 
-  cognitoCallback(message:string, result:any) {
-    if (message != null) { //error
-      this.doAlert("Error", message);
-      console.log("result: " + message);
-    } else { //success
-      console.log("Redirect to VoterBallotListPage");
-      this.nav.setRoot(VoterBallotListPage);
-    }
+  submitLogin() {
+    console.log("in submitLogin");
+    let loader = this.loadingCtrl.create({
+      spinner: "crescent",
+      content: "signing in..."
+    });
+    loader.present();
+
+    this.userService.authenticate(this.email, this.password).then((result) => {
+      loader.dismiss();
+      this.loggedInHandler();
+    }).catch((err) => {
+      loader.dismiss();
+      this.doAlert("Error", err.message);
+      console.log("result: " + err.message);
+    });
   }
 
   isLoggedInCallback(message:string, isLoggedIn:boolean) {
@@ -87,14 +98,18 @@ export class LoginComponent implements CognitoCallback, LoggedInCallback {
 @Component({
   template: ''
 })
-export class LogoutComponent implements LoggedInCallback {
+export class LogoutComponent {
 
   constructor(public navCtrl:NavController, public userService:UserLoginService) {
-    console.log("LogoutComponent constructor")
-    this.userService.isAuthenticated(this)
+    console.log("LogoutComponent constructor");
+    this.userService.isAuthenticated().then((isLoggedIn) => {
+      this.handleLogout(isLoggedIn)
+    }).catch((err) => {
+      console.error(err);
+    });
   }
 
-  isLoggedInCallback(message:string, isLoggedIn:boolean) {
+  handleLogout(isLoggedIn:boolean) {
     if (isLoggedIn) {
       this.userService.logout();
     }
@@ -107,7 +122,6 @@ export class LogoutComponent implements LoggedInCallback {
  * the registration of the user.
  */
 @Component({
-
   templateUrl: 'registration.html',
   providers: [UserRegistrationService]
 })

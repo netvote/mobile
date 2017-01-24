@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
+import {Http, Headers, RequestOptions} from '@angular/http';
+import {_NETVOTE_API_ENDPOINT, _ENV_NAME} from "./properties.service";
 import {CognitoUtil} from './cognito.service';
 /*
  Generated class for the VoteService provider.
@@ -8,72 +10,13 @@ import {CognitoUtil} from './cognito.service';
  for more info on providers and Angular 2 DI.
  */
 
-export const MOCK_BALLOT_LIST = [{
-    "Id": "ba0d6eee-6f45-4a0c-b3f7-2f8659b72c2b",
-    "Name": "2017 Holiday Party",
-    "Description": "What sort of holiday party should we have?",
-    "Image": "http://static.wixstatic.com/media/4552e2_d9cc379ee64243459ec53df68105b1f5~mv2.png"
-},
-{
-    "Id": "ba0d6eee-6f45-4a0c-b3f7-2f8659b72c2b",
-    "Name": "2017 Eagle Club Election",
-    "Description": "Choose our president, vice president, and chief eagle handler.",
-    "Image": "http://wallpapercave.com/wp/vNgIG1X.jpg"
-}];
 
-export const MOCK_BALLOT_DECISIONS = [{
-    "Id": "favorite-color",
-    "Name": "What is your favorite color?",
-    "BallotId": "ba0d6eee-6f45-4a0c-b3f7-2f8659b72c2b",
-    "Options": [{
-        "Id": "red",
-        "Name": "Red",
-        "Props": {
-            "key": "value"
-        }
-    }, {
-        "Id": "blue",
-        "Name": "Blue",
-        "Props": {
-            "key": "value"
-        }
-    }],
-    "Props": {
-        "key": "value"
-    },
-    "Repeatable": false,
-    "RepeatVoteDelayNS": 0,
-    "ResponsesRequired": 1
-}, {
-    "Id": "favorite-beer",
-    "Name": "What is your favorite beer?",
-    "BallotId": "47db9c36-af07-4383-baaf-0e143c4cb232",
-    "Options": [{
-        "Id": "IPA",
-        "Name": "IPA",
-        "Props": {
-            "key": "value"
-        }
-    }, {
-        "Id": "pils",
-        "Name": "Pilsner",
-        "Props": {
-            "key": "value"
-        }
-    }],
-    "Props": {
-        "key": "value"
-    },
-    "Repeatable": false,
-    "RepeatVoteDelayNS": 0,
-    "ResponsesRequired": 1
-}];
 
 
 @Injectable()
 export class VoteService {
 
-    constructor(public cognito: CognitoUtil) {
+    constructor(public cognito: CognitoUtil, public http: Http) {
         console.log('Hello VoteService Provider 2');
         this.cognito.getAccessToken().then((accessToken: string) => {
             console.log("token = " + accessToken);
@@ -84,26 +27,71 @@ export class VoteService {
 
     getVoterBallots(): Promise<any> {
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(MOCK_BALLOT_LIST);
-            }, 1000);
+            this.httpGet("/vote/ballots").then((data) => {
+                console.log(JSON.stringify(data));
+                resolve(data.ballots);
+            }).catch((err) => {
+                reject(err);
+            });
         });
     }
 
     getVoterBallotDecisions(id): Promise<any> {
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(MOCK_BALLOT_DECISIONS);
-            }, 1000);
+            this.httpGet("/vote/ballots/"+id).then((data) => {
+                resolve(data.decisions);
+            }).catch((err) => {
+                reject(err);
+            });
         });
     }
 
     castVote(vote): Promise<any> {
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(true);
-            }, 1000);
+            this.httpPost("/vote/ballots/"+vote.ballot.Id, vote.decisions).then((data) => {
+                resolve(data.result);
+            }).catch((err) => {
+                reject(err);
+            });
         });
+    }
+
+    private httpPost(path, data): Promise<any> {
+        return this.voteApiRequest("POST", path, data)
+    }
+
+    private httpGet(path): Promise<any> {
+        return this.voteApiRequest("GET", path, null)
+    }
+
+    private voteApiRequest(method, path, body): Promise<any>{
+        return this.cognito.getIdToken().then((idtoken) => {
+            console.log("id token = "+idtoken);
+            return new Promise((resolve, reject) => {
+
+                let opt: RequestOptions
+                let myHeaders: Headers = new Headers
+                myHeaders.set('Authorization', idtoken);
+                myHeaders.append('Content-type', 'application/json')
+
+                opt = new RequestOptions({
+                    method: method,
+                    headers: myHeaders,
+                    body: body
+                });
+
+                this.http.request(this.apiUrl(path), opt).map(res => res.json()).subscribe(data => {
+                    resolve(data);
+                }, error => {
+                    console.error("ERROR: "+JSON.stringify(error));
+                    reject(error);
+                });
+            });
+        });
+    }
+
+    private apiUrl(path): string{
+        return _NETVOTE_API_ENDPOINT[_ENV_NAME]+path;
     }
 
     addVoterBallot(id) {
