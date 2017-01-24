@@ -16,18 +16,11 @@ import {CognitoUtil} from './cognito.service';
 @Injectable()
 export class VoteService {
 
-    constructor(public cognito: CognitoUtil, public http: Http) {
-        console.log('Hello VoteService Provider 2');
-        this.cognito.getAccessToken().then((accessToken: string) => {
-            console.log("token = " + accessToken);
-        }).catch((ex) => {
-            console.log("ERROR!");
-        });
-    }
+    constructor(public cognito: CognitoUtil, public http: Http) {}
 
     getVoterBallots(): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.httpGet("/vote/ballots").then((data) => {
+            this.getApi("/vote/ballots").then((data) => {
                 console.log(JSON.stringify(data));
                 resolve(data.ballots);
             }).catch((err) => {
@@ -38,7 +31,7 @@ export class VoteService {
 
     getVoterBallotDecisions(id): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.httpGet("/vote/ballots/"+id).then((data) => {
+            this.getApi("/vote/ballots/"+id).then((data) => {
                 resolve(data.decisions);
             }).catch((err) => {
                 reject(err);
@@ -48,7 +41,7 @@ export class VoteService {
 
     castVote(vote): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.httpPost("/vote/ballots/"+vote.ballot.Id, vote.decisions).then((data) => {
+            this.postApi("/vote/ballots/"+vote.ballot.Id, vote.decisions).then((data) => {
                 resolve(data.result);
             }).catch((err) => {
                 reject(err);
@@ -56,17 +49,16 @@ export class VoteService {
         });
     }
 
-    private httpPost(path, data): Promise<any> {
+    private postApi(path, data): Promise<any> {
         return this.voteApiRequest("POST", path, data)
     }
 
-    private httpGet(path): Promise<any> {
+    private getApi(path): Promise<any> {
         return this.voteApiRequest("GET", path, null)
     }
 
     private voteApiRequest(method, path, body): Promise<any>{
         return this.cognito.getIdToken().then((idtoken) => {
-            console.log("id token = "+idtoken);
             return new Promise((resolve, reject) => {
 
                 let opt: RequestOptions
