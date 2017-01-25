@@ -36,9 +36,9 @@ export class VoterBallotListPage {
     })
   }
 
-  openBallot(ballot:any){
+  openBallot(ballotId:string){
     this.navCtrl.push(VoterBallotPage, {
-      "ballot": ballot
+      "ballotId": ballotId
     })
   }
 
