@@ -14,12 +14,12 @@ import {VoterBallotListPage} from "../voter-ballot-list/voter-ballot-list";
 })
 export class VoterBallotPage {
 
-  ballot: any;
+  ballotId: string;
   decisions: any = [];
   voterDecisions: any = {};
 
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public navParam:NavParams, public voteService: VoteService) {
-    this.ballot = navParam.get("ballot")
+    this.ballotId = navParam.get("ballotId")
   }
 
   ionViewDidLoad() {
@@ -29,7 +29,7 @@ export class VoterBallotPage {
       content: "loading ballot..."
     });
     loader.present();
-    this.voteService.getVoterBallotDecisions(this.ballot.Id).then((decisions) => {
+    this.voteService.getVoterBallotDecisions(this.ballotId).then((decisions) => {
       this.decisions = decisions;
       loader.dismiss();
       console.log("loaded ballots: "+this.decisions);
@@ -43,7 +43,7 @@ export class VoterBallotPage {
     });
     loader.present();
     this.voteService.castVote({
-      ballot: this.ballot,
+      ballotId: this.ballotId,
       decision: this.decisions
     }).then((result) => {
       loader.dismiss();

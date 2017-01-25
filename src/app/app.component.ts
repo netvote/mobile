@@ -1,10 +1,10 @@
 import {Component, ViewChild} from "@angular/core";
 import {Events, NavController, Platform, MenuController} from "ionic-angular";
-import {Splashscreen} from "ionic-native";
+import {Splashscreen, Deeplinks} from "ionic-native";
 import {LoginComponent, LogoutComponent} from "../pages/auth/auth";
 import {AwsUtil} from "../providers/aws.service";
 import {VoterBallotListPage} from "../pages/voter-ballot-list/voter-ballot-list";
-
+import {VoterBallotPage} from "../pages/voter-ballot/voter-ballot";
 
 @Component({
   templateUrl: 'app.html'
@@ -26,6 +26,11 @@ export class MyApp {
     console.log("In MyApp constructor");
 
     this.platform.ready().then(() => {
+
+      Deeplinks.routeWithNavController(this.navCtrl, {
+        '/ballot/:ballotId': VoterBallotPage
+      });
+
       this.awsUtil.initAwsService();
 
       this.rootPage = this.loginPage;
