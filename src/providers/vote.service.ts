@@ -51,6 +51,23 @@ export class VoteService {
         });
     }
 
+    shareBallot(ballotId, smsList, emailList): Promise<any> {
+        return new Promise((resolve, reject) => {
+
+            let payload = {
+                "sms": smsList,
+                "email": emailList
+            };
+
+            this.postApi("/admin/ballot/"+ballotId+"/share", payload).then((data) => {
+                console.log(JSON.stringify(data));
+                resolve(data);
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
+
     deleteBallot(ballotId): Promise<any> {
         return new Promise((resolve, reject) => {
             this.deleteApi("/admin/ballot/"+ballotId).then((data) => {
@@ -128,6 +145,7 @@ export class VoteService {
                 path = this.apiUrl(path);
 
                 console.log(method+": "+path);
+                console.log("payload: "+JSON.stringify(body));
 
                 this.http.request(path, opt).map(res => res.json()).subscribe(data => {
                     resolve(data);

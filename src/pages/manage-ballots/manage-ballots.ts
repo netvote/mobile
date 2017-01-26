@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {NavController, LoadingController} from 'ionic-angular';
+import {NavController, LoadingController, AlertController} from 'ionic-angular';
 import { VoteService } from "../../providers/vote.service";
 
 /*
@@ -16,7 +16,7 @@ export class ManageBallotsPage {
 
   ballots: any = [];
 
-  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public voteService: VoteService) {}
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public voteService: VoteService, public alertCtrl: AlertController) {}
 
   ionViewDidLoad() {
     let loader = this.loadingCtrl.create({
@@ -39,6 +39,44 @@ export class ManageBallotsPage {
 
   openResults(ballotId){
 
+  }
+
+  shareBallot(ballotId){
+    let prompt = this.alertCtrl.create({
+      title: 'Enter Phone',
+      message: "Enter a phone number to send this ballot to",
+      inputs: [
+        {
+          name: 'phone',
+          placeholder: 'Phone Number'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+          }
+        },
+        {
+          text: 'Send',
+          handler: data => {
+            this.sendShareBallot(ballotId, ["+"+data.phone], [])
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  private sendShareBallot(ballotId, phones, emails){
+    let loader = this.loadingCtrl.create({
+      spinner: "crescent",
+      content: "sharing ballot..."
+    });
+    loader.present();
+    this.voteService.shareBallot(ballotId, phones, emails).then((result) => {
+      loader.dismiss();
+    })
   }
 
   deleteBallot(ballotId){
