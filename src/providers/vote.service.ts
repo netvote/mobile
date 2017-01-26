@@ -18,9 +18,53 @@ export class VoteService {
 
     constructor(public cognito: CognitoUtil, public http: Http) {}
 
+    getAdminBallots(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.getApi("/admin/ballot").then((data) => {
+                console.log(JSON.stringify(data));
+                resolve(data);
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
+
+    getAdminBallot(id): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.getApi("/admin/ballot/"+id).then((data) => {
+                console.log(JSON.stringify(data));
+                resolve(data.ballot);
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
+
+    createBallot(ballot): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.postApi("/admin/ballot", ballot).then((data) => {
+                console.log(JSON.stringify(data));
+                resolve(data.ballot);
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
+
+    deleteBallot(ballotId): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.deleteApi("/admin/ballot/"+ballotId).then((data) => {
+                console.log(JSON.stringify(data));
+                resolve(data);
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
+
     getVoterBallots(): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.getApi("/vote/ballots").then((data) => {
+            this.getApi("/vote/ballot").then((data) => {
                 console.log(JSON.stringify(data));
                 resolve(data.ballots);
             }).catch((err) => {
@@ -31,7 +75,7 @@ export class VoteService {
 
     getVoterBallotDecisions(id): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.getApi("/vote/ballots/"+id).then((data) => {
+            this.getApi("/vote/ballot/"+id).then((data) => {
                 resolve(data.decisions);
             }).catch((err) => {
                 reject(err);
@@ -41,12 +85,20 @@ export class VoteService {
 
     castVote(vote): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.postApi("/vote/ballots/"+vote.ballot.Id, vote.decisions).then((data) => {
+            this.postApi("/vote/ballot/"+vote.ballot.Id, vote.decisions).then((data) => {
                 resolve(data.result);
             }).catch((err) => {
                 reject(err);
             });
         });
+    }
+
+    addVoterBallot(id) {
+        //adds ballot id to my list
+    }
+
+    private deleteApi(path): Promise<any> {
+        return this.voteApiRequest("DELETE", path, null)
     }
 
     private postApi(path, data): Promise<any> {
@@ -73,7 +125,11 @@ export class VoteService {
                     body: body
                 });
 
-                this.http.request(this.apiUrl(path), opt).map(res => res.json()).subscribe(data => {
+                path = this.apiUrl(path);
+
+                console.log(method+": "+path);
+
+                this.http.request(path, opt).map(res => res.json()).subscribe(data => {
                     resolve(data);
                 }, error => {
                     console.error("ERROR: "+JSON.stringify(error));
@@ -87,9 +143,7 @@ export class VoteService {
         return _NETVOTE_API_ENDPOINT[_ENV_NAME]+path;
     }
 
-    addVoterBallot(id) {
-        //adds ballot id to my list
-    }
+
 
 
 }

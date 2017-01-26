@@ -22,6 +22,8 @@ import {Storage} from "@ionic/storage";
 import {EventsService} from "../providers/events.service";
 import {VoteService} from "../providers/vote.service";
 import {VoterBallotPage} from "../pages/voter-ballot/voter-ballot";
+import {ManageBallotsPage} from "../pages/manage-ballots/manage-ballots";
+
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import {VoterBallotPage} from "../pages/voter-ballot/voter-ballot";
     ForgotPasswordStep1Component,
     ForgotPasswordStep2Component,
     VoterBallotListPage,
-    VoterBallotPage
+    VoterBallotPage,
+    ManageBallotsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -50,7 +53,8 @@ import {VoterBallotPage} from "../pages/voter-ballot/voter-ballot";
     ForgotPasswordStep1Component,
     ForgotPasswordStep2Component,
     VoterBallotListPage,
-    VoterBallotPage
+    VoterBallotPage,
+    ManageBallotsPage
   ],
   providers: [CognitoUtil,
     AwsUtil,

@@ -5,6 +5,8 @@ import {LoginComponent, LogoutComponent} from "../pages/auth/auth";
 import {AwsUtil} from "../providers/aws.service";
 import {VoterBallotListPage} from "../pages/voter-ballot-list/voter-ballot-list";
 import {VoterBallotPage} from "../pages/voter-ballot/voter-ballot";
+import {ManageBallotsPage} from "../pages/manage-ballots/manage-ballots";
+
 
 @Component({
   templateUrl: 'app.html'
@@ -15,6 +17,7 @@ export class MyApp {
   public homePage = VoterBallotListPage;
   public logoutPage = LogoutComponent;
   public settingsPage = VoterBallotListPage;
+  public manageBallots = ManageBallotsPage;
 
   public rootPage:any;
 
