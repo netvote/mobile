@@ -6,6 +6,7 @@ import {AwsUtil} from "../providers/aws.service";
 import {VoterBallotListPage} from "../pages/voter-ballot-list/voter-ballot-list";
 import {VoterBallotPage} from "../pages/voter-ballot/voter-ballot";
 import {ManageBallotsPage} from "../pages/manage-ballots/manage-ballots";
+import {UserLoginService} from "../providers/cognito.service";
 
 
 @Component({
@@ -25,21 +26,35 @@ export class MyApp {
   constructor(public platform:Platform,
               public menu:MenuController,
               public events:Events,
-              public awsUtil:AwsUtil) {
+              public awsUtil:AwsUtil,
+              public userLogin:UserLoginService) {
     console.log("In MyApp constructor");
 
     this.platform.ready().then(() => {
 
       Deeplinks.routeWithNavController(this.navCtrl, {
         '/ballot/:ballotId': VoterBallotPage
+      }).subscribe((match) => {
+        // match.$route - the route we matched, which is the matched entry from the arguments to route()
+        // match.$args - the args passed in the link
+        // match.$link - the full link data
+        console.log('Successfully matched route', match);
+      }, (nomatch) => {
+        // nomatch.$link - the full link data
+        console.error('Got a deeplink that didn\'t match', nomatch);
       });
 
       this.awsUtil.initAwsService();
 
-      this.rootPage = this.loginPage;
-
-      console.log("Hiding splash screen");
-      Splashscreen.hide();
+      this.userLogin.isAuthenticated().then((loggedIn) => {
+        if(loggedIn){
+          this.rootPage = this.homePage;
+        }else{
+          this.rootPage = this.loginPage;
+        }
+        console.log("Hiding splash screen");
+        Splashscreen.hide();
+      });
       this.listenToLoginEvents();
     });
 

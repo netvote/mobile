@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import {NavController, LoadingController, AlertController} from 'ionic-angular';
+import {NavController, LoadingController, AlertController, ActionSheetController} from 'ionic-angular';
 import { VoteService } from "../../providers/vote.service";
+import {VoterBallotPage} from "../voter-ballot/voter-ballot";
 
 /*
   Generated class for the ManageBallots page.
@@ -16,7 +17,7 @@ export class ManageBallotsPage {
 
   ballots: any = [];
 
-  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public voteService: VoteService, public alertCtrl: AlertController) {}
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public voteService: VoteService, public alertCtrl: AlertController) {}
 
   ionViewDidLoad() {
     let loader = this.loadingCtrl.create({
@@ -31,6 +32,33 @@ export class ManageBallotsPage {
     }).catch((err) => {
       console.error(err);
     })
+  }
+
+  openMore(ballotId){
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Modify your album',
+      buttons: [
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            this.deleteBallot(ballotId);
+          }
+        },{
+          text: 'Send to Me',
+          handler: () => {
+            this.navCtrl.setRoot(VoterBallotPage, {
+              "ballotId": ballotId
+            })
+          }
+        },{
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {}
+        }
+      ]
+    });
+    actionSheet.present();
   }
 
   openEditBallot(ballotId){

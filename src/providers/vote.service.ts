@@ -83,7 +83,7 @@ export class VoteService {
         return new Promise((resolve, reject) => {
             this.getApi("/vote/ballot").then((data) => {
                 console.log(JSON.stringify(data));
-                resolve(data.ballots);
+                resolve(data);
             }).catch((err) => {
                 reject(err);
             });
@@ -93,7 +93,8 @@ export class VoteService {
     getVoterBallotDecisions(id): Promise<any> {
         return new Promise((resolve, reject) => {
             this.getApi("/vote/ballot/"+id).then((data) => {
-                resolve(data.decisions);
+                console.log("result="+JSON.stringify(data));
+                resolve(data);
             }).catch((err) => {
                 reject(err);
             });
@@ -102,8 +103,8 @@ export class VoteService {
 
     castVote(vote): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.postApi("/vote/ballot/"+vote.ballot.Id, vote.decisions).then((data) => {
-                resolve(data.result);
+            this.postApi("/vote/ballot/"+vote.ballotId, vote.decisions).then((data) => {
+                resolve(data);
             }).catch((err) => {
                 reject(err);
             });

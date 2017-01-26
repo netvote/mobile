@@ -36,18 +36,38 @@ export class VoterBallotPage {
     })
   }
 
+  getDecisionScores(){
+    let scores = [];
+    console.log("voterDecisions = "+JSON.stringify(this.voterDecisions))
+    for(let decisionId in this.voterDecisions){
+      console.log("decisionId="+decisionId);
+      if(this.voterDecisions.hasOwnProperty(decisionId)) {
+        let score = {
+          "DecisionId": decisionId,
+          "Selections": {}
+        };
+        score.Selections[this.voterDecisions[decisionId]] = 1;
+        scores.push(score);
+      }
+    }
+    return scores;
+  }
+
   castVote(){
     let loader = this.loadingCtrl.create({
       spinner: "crescent",
       content: "casting vote..."
     });
     loader.present();
+
+    let voterDecisions = this.getDecisionScores();
+
     this.voteService.castVote({
       ballotId: this.ballotId,
-      decision: this.decisions
+      decisions: voterDecisions
     }).then((result) => {
-      loader.dismiss();
-      this.navCtrl.setRoot(VoterBallotListPage)
+        loader.dismiss();
+        this.navCtrl.setRoot(VoterBallotListPage)
     })
   }
 

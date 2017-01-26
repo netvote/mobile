@@ -28,7 +28,14 @@ export class VoterBallotListPage {
     loader.present();
     console.log('Hello VoterBallotListPage Page');
     this.voteService.getVoterBallots().then((ballots) => {
-      this.ballots = ballots;
+      let tempBallots = [];
+      console.log('ballots: '+JSON.stringify(ballots));
+      for(var i=0; i<ballots.length; i++){
+        if(ballots[i].Id != ""){
+          tempBallots.push(ballots[i]);
+        }
+      }
+      this.ballots = tempBallots;
       loader.dismiss();
       console.log("loaded ballots: "+this.ballots);
     }).catch((err) => {

@@ -41,9 +41,9 @@
         </button>
       </ion-col>
       <ion-col text-center>
-        <button color="danger" (click)="deleteBallot(ballot.Ballot.Id)" ion-button clear small icon-left>
-          <ion-icon name='trash'></ion-icon>
-          Delete
+        <button (click)="openMore(ballot.Ballot.Id)" ion-button clear small icon-left>
+          <ion-icon name='more'></ion-icon>
+          More
         </button>
       </ion-col>
     </ion-row>
