@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {NavController, LoadingController, AlertController, ActionSheetController} from 'ionic-angular';
 import { VoteService } from "../../providers/vote.service";
 import {VoterBallotPage} from "../voter-ballot/voter-ballot";
+import {BallotResultsPage} from "../ballot-results/ballot-results";
 
 /*
   Generated class for the ManageBallots page.
@@ -45,6 +46,13 @@ export class ManageBallotsPage {
             this.deleteBallot(ballotId);
           }
         },{
+          text: 'Results',
+          handler: () => {
+            this.navCtrl.push(BallotResultsPage, {
+              "ballotId": ballotId
+            })
+          }
+        },{
           text: 'Send to Me',
           handler: () => {
             this.navCtrl.setRoot(VoterBallotPage, {
@@ -62,10 +70,6 @@ export class ManageBallotsPage {
   }
 
   openEditBallot(ballotId){
-
-  }
-
-  openResults(ballotId){
 
   }
 

@@ -33,7 +33,18 @@ export class VoteService {
         return new Promise((resolve, reject) => {
             this.getApi("/admin/ballot/"+id).then((data) => {
                 console.log(JSON.stringify(data));
-                resolve(data.ballot);
+                resolve(data);
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
+
+    getBallotResults(id): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.getApi("/admin/ballot/"+id+"/results").then((data) => {
+                console.log(JSON.stringify(data));
+                resolve(data);
             }).catch((err) => {
                 reject(err);
             });

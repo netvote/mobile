@@ -23,6 +23,7 @@ import {EventsService} from "../providers/events.service";
 import {VoteService} from "../providers/vote.service";
 import {VoterBallotPage} from "../pages/voter-ballot/voter-ballot";
 import {ManageBallotsPage} from "../pages/manage-ballots/manage-ballots";
+import {BallotResultsPage} from "../pages/ballot-results/ballot-results";
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import {ManageBallotsPage} from "../pages/manage-ballots/manage-ballots";
     ForgotPasswordStep2Component,
     VoterBallotListPage,
     VoterBallotPage,
-    ManageBallotsPage
+    ManageBallotsPage,
+    BallotResultsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -54,7 +56,8 @@ import {ManageBallotsPage} from "../pages/manage-ballots/manage-ballots";
     ForgotPasswordStep2Component,
     VoterBallotListPage,
     VoterBallotPage,
-    ManageBallotsPage
+    ManageBallotsPage,
+    BallotResultsPage
   ],
   providers: [CognitoUtil,
     AwsUtil,

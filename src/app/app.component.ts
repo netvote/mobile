@@ -52,6 +52,7 @@ export class MyApp {
   openPage(page) {
     // Reset the nav controller to have just this page
     // we wouldn't want the back button to show in this scenario
+    console.log("setting page to "+(typeof page));
     this.rootPage = page;
 
     // close the menu when clicking a link from the menu
