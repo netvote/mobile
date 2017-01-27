@@ -5,11 +5,11 @@ export let _CLIENT_ID = "705a98srru2f5iv2lij0eudkqp";
 export let _MOBILE_ANALYTICS_APP_ID = "105c6b299fd84a57805277fd570d5541";
 export let _NETVOTE_API_ENDPOINT = {
   "mock": "https://ic2k163wu0.execute-api.us-east-1.amazonaws.com/mock",
-  "dev": "https://lznn9s63e6.execute-api.us-east-1.amazonaws.com/netvote_mobile_dev",
+  "dev": "https://bzz4vagm4a.execute-api.us-east-1.amazonaws.com/netvote_mobile_dev",
   "prod": ""
 };
 
-export let _NETVOTE_API_KEY = "Qm1HcAbIOx7qS0OAhL28za1eWlL4Eoaz45IXc0WA";
+export let _NETVOTE_API_KEY = "dGGm6zBaid4f05wLFkfAb245omrWVth432hVqGVb";
 
 //todo: pass this in somehow
 export let _ENV_NAME = "dev";

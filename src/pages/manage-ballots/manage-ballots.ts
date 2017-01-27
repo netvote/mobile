@@ -36,7 +36,7 @@ export class ManageBallotsPage {
 
   openMore(ballotId){
     let actionSheet = this.actionSheetCtrl.create({
-      title: 'Modify your album',
+      title: 'Ballot Options',
       buttons: [
         {
           text: 'Delete',
@@ -147,9 +147,12 @@ export class ManageBallotsPage {
         }, {
           "Id": "blue",
           "Name": "Blue"
+        },{
+          "Id": "green",
+          "Name": "Green"
         }]
       }, {
-        "Name": "Pick your two favorite beers",
+        "Name": "What is your favorite beer?",
         "Options": [{
           "Id": "ipa",
           "Name": "IPA"
