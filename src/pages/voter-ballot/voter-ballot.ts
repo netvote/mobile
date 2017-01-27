@@ -84,10 +84,10 @@ export class VoterBallotPage {
       ballotId: this.ballotId,
       decisions: voterDecisions
     }).then((result) => {
-        setTimeout(function (){
-          this.loader.dismiss();
-          this.navCtrl.setRoot(VoterBallotListPage)
-        }, 3000);
+      setTimeout(() => {
+        this.loader.dismiss();
+        this.navCtrl.setRoot(VoterBallotListPage)
+      }, 3000);
     })
   }
 
