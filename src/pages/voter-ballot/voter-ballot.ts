@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {NavController, NavParams, LoadingController, Loading} from 'ionic-angular';
+import {NavController, NavParams, LoadingController, Loading, AlertController} from 'ionic-angular';
 import {VoteService} from "../../providers/vote.service";
 import {VoterBallotListPage} from "../voter-ballot-list/voter-ballot-list";
 /*
@@ -19,7 +19,7 @@ export class VoterBallotPage {
   decisions: any = [];
   voterDecisions: any = {};
 
-  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public navParam:NavParams, public voteService: VoteService) {
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public alertCtrl: AlertController, public navParam:NavParams, public voteService: VoteService) {
     this.ballotId = navParam.get("ballotId")
   }
 
@@ -31,9 +31,26 @@ export class VoterBallotPage {
     });
     this.loader.present();
     this.voteService.getVoterBallotDecisions(this.ballotId).then((decisions) => {
-      this.decisions = decisions;
-      this.loader.dismiss();
-      console.log("loaded ballots: "+this.decisions);
+      if(decisions.length == 0){
+        this.loader.dismiss();
+        let prompt = this.alertCtrl.create({
+          title: 'Already Voted',
+          message: "You have already voted for this ballot. Thanks!",
+          buttons: [
+            {
+              text: 'Ok',
+              handler: data => {
+                this.navCtrl.setRoot(VoterBallotListPage)
+              }
+            }
+          ]
+        });
+        prompt.present();
+      }else {
+        this.decisions = decisions;
+        this.loader.dismiss();
+        console.log("loaded ballots: " + this.decisions);
+      }
     })
   }
 
