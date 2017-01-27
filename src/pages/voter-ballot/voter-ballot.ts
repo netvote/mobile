@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {NavController, NavParams, LoadingController} from 'ionic-angular';
+import {NavController, NavParams, LoadingController, Loading} from 'ionic-angular';
 import {VoteService} from "../../providers/vote.service";
 import {VoterBallotListPage} from "../voter-ballot-list/voter-ballot-list";
 /*
@@ -15,6 +15,7 @@ import {VoterBallotListPage} from "../voter-ballot-list/voter-ballot-list";
 export class VoterBallotPage {
 
   ballotId: string;
+  loader: Loading;
   decisions: any = [];
   voterDecisions: any = {};
 
@@ -24,14 +25,14 @@ export class VoterBallotPage {
 
   ionViewDidLoad() {
     console.log('Hello VoterBallotPage Page');
-    let loader = this.loadingCtrl.create({
+    this.loader = this.loadingCtrl.create({
       spinner: "crescent",
       content: "loading ballot..."
     });
-    loader.present();
+    this.loader.present();
     this.voteService.getVoterBallotDecisions(this.ballotId).then((decisions) => {
       this.decisions = decisions;
-      loader.dismiss();
+      this.loader.dismiss();
       console.log("loaded ballots: "+this.decisions);
     })
   }
@@ -54,11 +55,11 @@ export class VoterBallotPage {
   }
 
   castVote(){
-    let loader = this.loadingCtrl.create({
+    this.loader = this.loadingCtrl.create({
       spinner: "crescent",
       content: "casting vote..."
     });
-    loader.present();
+    this.loader.present();
 
     let voterDecisions = this.getDecisionScores();
 
@@ -66,10 +67,14 @@ export class VoterBallotPage {
       ballotId: this.ballotId,
       decisions: voterDecisions
     }).then((result) => {
-        loader.dismiss();
-        this.navCtrl.setRoot(VoterBallotListPage)
+        setTimeout(function (){
+          this.loader.dismiss();
+          this.navCtrl.setRoot(VoterBallotListPage)
+        }, 3000);
     })
   }
+
+
 
   isVoteDisabled(){
     for(var decision of this.decisions){

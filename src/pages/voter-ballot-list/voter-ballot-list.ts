@@ -39,7 +39,7 @@ export class VoterBallotListPage {
       loader.dismiss();
       console.log("loaded ballots: "+this.ballots);
     }).catch((err) => {
-      console.error(JSON.stringify(err));
+      console.error(err);
     })
   }
 

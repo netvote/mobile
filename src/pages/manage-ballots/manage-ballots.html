@@ -17,6 +17,11 @@
 
 
 <ion-content class="card-background-page">
+  <ion-card [hidden]="ballots.length > 0">
+    <ion-card-header>
+      You have no ballots.
+    </ion-card-header>
+  </ion-card>
   <ion-card *ngFor="let ballot of ballots" [hidden]="ballots.length == 0">
     <img src="{{ ballot.Ballot.Image }}" [hidden]="ballot.Ballot.Image == null || ballot.Ballot.Image == ''"/>
     <ion-card-content>
