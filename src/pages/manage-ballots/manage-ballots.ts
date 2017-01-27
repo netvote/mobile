@@ -46,14 +46,12 @@ export class ManageBallotsPage {
             this.deleteBallot(ballotId);
           }
         },{
-          text: 'Results',
+          text: 'Share',
           handler: () => {
-            this.navCtrl.push(BallotResultsPage, {
-              "ballotId": ballotId
-            })
+            this.shareBallot(ballotId)
           }
         },{
-          text: 'Send to Me',
+          text: 'Share to Me (dev)',
           handler: () => {
             this.navCtrl.setRoot(VoterBallotPage, {
               "ballotId": ballotId
@@ -71,6 +69,12 @@ export class ManageBallotsPage {
 
   openEditBallot(ballotId){
 
+  }
+
+  openResults(ballotId){
+    this.navCtrl.push(BallotResultsPage, {
+      "ballotId": ballotId
+    })
   }
 
   shareBallot(ballotId){
