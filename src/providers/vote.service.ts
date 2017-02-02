@@ -101,7 +101,7 @@ export class VoteService {
         });
     }
 
-    getVoterBallotDecisions(id): Promise<any> {
+    getVoterBallot(id): Promise<any> {
         return new Promise((resolve, reject) => {
             this.getApi("/vote/ballot/"+id).then((data) => {
                 console.log("result="+JSON.stringify(data));

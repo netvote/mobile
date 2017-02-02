@@ -17,14 +17,10 @@
 
 
 <ion-content class="card-background-page">
-    <ion-card [hidden]="ballots.length > 0">
-        <ion-card-header>
-            You have no ballots.
-        </ion-card-header>
-    </ion-card>
     <ion-card *ngFor="let ballot of ballots" [hidden]="ballots.length == 0">
-        <img src="{{ ballot.Image }}" [hidden]="ballot.Image == null || ballot.Image == ''"/>
         <ion-card-content>
+            <img src="{{ ballot.Attributes.Image }}" [hidden]="ballot.Attributes.Image == null || ballot.Attributes.Image == ''"/>
+
             <ion-card-title>
                 {{ ballot.Name }}
             </ion-card-title>
@@ -34,11 +30,16 @@
         </ion-card-content>
         <ion-row no-padding>
             <ion-col>
-                <button (click)="openBallot(ballot.Id)" ion-button clear small icon-left>
+                <button (click)="openBallot(ballot.Id)" ion-button clear block icon-left>
                     <ion-icon name='checkmark-circle'></ion-icon>
                     Vote
                 </button>
             </ion-col>
         </ion-row>
+    </ion-card>
+    <ion-card [hidden]="ballots.length > 0">
+        <ion-card-header>
+            You have no ballots.
+        </ion-card-header>
     </ion-card>
 </ion-content>

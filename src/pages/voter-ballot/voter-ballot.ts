@@ -14,6 +14,7 @@ import {VoterBallotListPage} from "../voter-ballot-list/voter-ballot-list";
 })
 export class VoterBallotPage {
 
+  ballot: any = {};
   ballotId: string;
   loader: Loading;
   decisions: any = [];
@@ -30,7 +31,9 @@ export class VoterBallotPage {
       content: "loading ballot..."
     });
     this.loader.present();
-    this.voteService.getVoterBallotDecisions(this.ballotId).then((decisions) => {
+    this.voteService.getVoterBallot(this.ballotId).then((ballot) => {
+      var decisions = ballot.Decisions;
+      this.ballot = ballot.Ballot;
       if(decisions.length == 0){
         this.loader.dismiss();
         let prompt = this.alertCtrl.create({

@@ -145,7 +145,10 @@ export class ManageBallotsPage {
       "Ballot": {
         "Name": "Test Election",
         "Description": "This is for demoing basic functionality.",
-        "Requires2FA": false
+        "Requires2FA": false,
+        "Attributes":{
+          "Image": "http://www.biologicaldiversity.org/news/press_releases/2016/images/BaldEagle_RobinSilver.jpg"
+        }
       },
       "Decisions": [{
         "Name": "What is your favorite color?",

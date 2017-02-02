@@ -23,8 +23,9 @@
     </ion-card-header>
   </ion-card>
   <ion-card *ngFor="let ballot of ballots" [hidden]="ballots.length == 0">
-    <img src="{{ ballot.Ballot.Image }}" [hidden]="ballot.Ballot.Image == null || ballot.Ballot.Image == ''"/>
     <ion-card-content>
+      <img src="{{ ballot.Ballot.Attributes.Image }}" [hidden]="ballot.Ballot.Attributes.Image == null || ballot.Ballot.Attributes.Image == ''"/>
+
       <ion-card-title>
         {{ ballot.Ballot.Name }}
       </ion-card-title>

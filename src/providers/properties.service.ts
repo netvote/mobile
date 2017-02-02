@@ -9,7 +9,7 @@ export let _NETVOTE_API_ENDPOINT = {
   "prod": ""
 };
 
-export let _NETVOTE_API_KEY = "dGGm6zBaid4f05wLFkfAb245omrWVth432hVqGVb";
+export let _NETVOTE_API_KEY = "Z9dciRQ98WaCdetgR0Aup4QVpHZjSGHg7xwdj05A";
 
 //todo: pass this in somehow
 export let _ENV_NAME = "dev";
