@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {NavController, LoadingController} from 'ionic-angular';
 import { VoteService } from "../../providers/vote.service";
 import { VoterBallotPage } from "../voter-ballot/voter-ballot";
+import {BarcodeScanner} from "ionic-native";
 
 
 /*
@@ -20,6 +21,17 @@ export class VoterBallotListPage {
 
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public voteService: VoteService) {}
 
+
+  doRefresh(refresher){
+    this.voteService.getVoterBallots().then((ballots) => {
+      this.ballots = ballots;
+      refresher.complete();
+      console.log("loaded ballots: "+this.ballots);
+    }).catch((err) => {
+      console.error(err);
+    })
+  }
+
   ionViewDidLoad() {
     let loader = this.loadingCtrl.create({
       spinner: "crescent",
@@ -28,20 +40,27 @@ export class VoterBallotListPage {
     loader.present();
     console.log('Hello VoterBallotListPage Page');
     this.voteService.getVoterBallots().then((ballots) => {
-      let tempBallots = [];
-      console.log('ballots: '+JSON.stringify(ballots));
-      for(var i=0; i<ballots.length; i++){
-        if(ballots[i].Id != ""){
-          tempBallots.push(ballots[i]);
-        }
-      }
-      this.ballots = tempBallots;
+      this.ballots = ballots;
       loader.dismiss();
       console.log("loaded ballots: "+this.ballots);
     }).catch((err) => {
       console.error(err);
     })
   }
+
+  scan(){
+    BarcodeScanner.scan().then((barcodeData) => {
+      console.log("barcode = "+JSON.stringify(barcodeData));
+      if(barcodeData && barcodeData.text) {
+        var ballotId = barcodeData.text.substring(barcodeData.text.lastIndexOf("/") + 1);
+        this.openBallot(ballotId);
+      }
+    }, (err) => {
+      console.error("bardcode error: "+err);
+      // An error occurred
+    });
+  }
+
 
   openBallot(ballotId:string){
     this.navCtrl.push(VoterBallotPage, {

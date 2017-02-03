@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {NavController, LoadingController, AlertController, ActionSheetController} from 'ionic-angular';
 import { VoteService } from "../../providers/vote.service";
-import {VoterBallotPage} from "../voter-ballot/voter-ballot";
 import {BallotResultsPage} from "../ballot-results/ballot-results";
 
 /*
@@ -53,9 +52,7 @@ export class ManageBallotsPage {
         },{
           text: 'Share to Me (dev)',
           handler: () => {
-            this.navCtrl.setRoot(VoterBallotPage, {
-              "ballotId": ballotId
-            })
+            this.sendShareBallot(ballotId, ["+16788965681"], ["steven.landers@gmail.com"])
           }
         },{
           text: 'Cancel',

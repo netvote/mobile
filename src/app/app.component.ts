@@ -57,9 +57,6 @@ export class MyApp {
       Deeplinks.routeWithNavController(this.navCtrl, {
         '/ballot/:ballotId': VoterBallotPage
       }).subscribe((match) => {
-        // match.$route - the route we matched, which is the matched entry from the arguments to route()
-        // match.$args - the args passed in the link
-        // match.$link - the full link data
         console.log('Successfully matched route route=', JSON.stringify(match));
 
         var ballotId = match.$link.path.substring(1);

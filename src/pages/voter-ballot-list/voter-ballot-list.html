@@ -17,6 +17,9 @@
 
 
 <ion-content class="card-background-page">
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <ion-card *ngFor="let ballot of ballots" [hidden]="ballots.length == 0">
         <ion-card-content>
             <img src="{{ ballot.Attributes.Image }}" [hidden]="ballot.Attributes.Image == null || ballot.Attributes.Image == ''"/>
@@ -43,3 +46,9 @@
         </ion-card-header>
     </ion-card>
 </ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <button ion-button clear block (click)="scan()">Scan QR</button>
+    </ion-toolbar>
+</ion-footer>
