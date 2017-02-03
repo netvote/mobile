@@ -1,6 +1,6 @@
 {
-  "name": "netvote",
-  "app_id": "",
+  "name": "Netvote",
+  "app_id": "com.netvote.app",
   "v2": true,
   "typescript": true
 }
