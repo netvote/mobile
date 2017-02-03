@@ -17,6 +17,9 @@
 
 
 <ion-content class="card-background-page">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-card [hidden]="ballots.length > 0">
     <ion-card-header>
       You have no ballots.

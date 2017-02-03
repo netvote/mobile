@@ -19,6 +19,15 @@ export class ManageBallotsPage {
 
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public voteService: VoteService, public alertCtrl: AlertController) {}
 
+  doRefresh(refresher){
+    this.voteService.getAdminBallots().then((ballots) => {
+      refresher.complete();
+      this.ballots = ballots;
+    }).catch((err) => {
+      console.error(err);
+    })
+  }
+
   ionViewDidLoad() {
     let loader = this.loadingCtrl.create({
       spinner: "crescent",
