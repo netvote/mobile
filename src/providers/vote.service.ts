@@ -90,6 +90,17 @@ export class VoteService {
         });
     }
 
+    sendSMSCode(phone): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.postApi("/security/code/sms", {phone: phone}).then((data) =>{
+                console.log(JSON.stringify(data));
+                resolve(data);
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
+
     getVoterBallots(): Promise<any> {
         return new Promise((resolve, reject) => {
             this.getApi("/vote/ballot").then((data) => {
@@ -112,9 +123,11 @@ export class VoteService {
         });
     }
 
-    castVote(vote): Promise<any> {
+    castVote(vote, code): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.postApi("/vote/ballot/"+vote.ballotId, vote.decisions).then((data) => {
+            this.postApi("/vote/ballot/"+vote.ballotId, vote.decisions, {
+                "nv-two-factor-code": code
+            }).then((data) => {
                 resolve(data);
             }).catch((err) => {
                 reject(err);
@@ -126,19 +139,19 @@ export class VoteService {
         //adds ballot id to my list
     }
 
-    private deleteApi(path): Promise<any> {
-        return this.voteApiRequest("DELETE", path, null)
+    private deleteApi(path, headerMap = {}): Promise<any> {
+        return this.voteApiRequest("DELETE", path, null, headerMap)
     }
 
-    private postApi(path, data): Promise<any> {
-        return this.voteApiRequest("POST", path, data)
+    private postApi(path, data, headerMap = {}): Promise<any> {
+        return this.voteApiRequest("POST", path, data, headerMap)
     }
 
-    private getApi(path): Promise<any> {
-        return this.voteApiRequest("GET", path, null)
+    private getApi(path, headerMap = {}): Promise<any> {
+        return this.voteApiRequest("GET", path, null, headerMap)
     }
 
-    private voteApiRequest(method, path, body): Promise<any>{
+    private voteApiRequest(method, path, body, headerMap = {}): Promise<any>{
         return this.cognito.getIdToken().then((idtoken) => {
             return new Promise((resolve, reject) => {
 
@@ -146,7 +159,13 @@ export class VoteService {
                 let myHeaders: Headers = new Headers
                 myHeaders.set('Authorization', idtoken);
                 myHeaders.set('x-api-key', _NETVOTE_API_KEY);
-                myHeaders.append('Content-type', 'application/json')
+                myHeaders.append('Content-type', 'application/json');
+
+                for(let key in headerMap){
+                    if(headerMap.hasOwnProperty(key)){
+                        myHeaders.set(key, headerMap[key]);
+                    }
+                }
 
                 opt = new RequestOptions({
                     method: method,
@@ -162,7 +181,12 @@ export class VoteService {
                 this.http.request(path, opt).map(res => res.json()).subscribe(data => {
                     resolve(data);
                 }, error => {
-                    console.error("ERROR: "+JSON.stringify(error));
+                    for(let key in error){
+                        if(error.hasOwnProperty(key)){
+                            console.error("http error: "+key+":"+error[key]);
+                        }
+                    }
+                    console.error("ERROR: "+error.message);
                     reject(error);
                 });
             });

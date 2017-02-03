@@ -75,23 +75,81 @@ export class VoterBallotPage {
   }
 
   castVote(){
-    this.loader = this.loadingCtrl.create({
-      spinner: "crescent",
-      content: "casting vote..."
+
+    this.verify2FA().then((code) => {
+      this.loader = this.loadingCtrl.create({
+        spinner: "crescent",
+        content: "casting vote..."
+      });
+      this.loader.present();
+
+      let voterDecisions = this.getDecisionScores();
+
+      this.voteService.castVote({
+        ballotId: this.ballotId,
+        decisions: voterDecisions
+      }, code).then((result) => {
+        setTimeout(() => {
+          this.loader.dismiss();
+          this.navCtrl.setRoot(VoterBallotListPage)
+        }, 3000);
+      }).catch((err)=>{
+        let title = "Error";
+        let message = "Something went wrong";
+        if(err.status == 401) {
+          message = (this.ballot.Requires2FA) ? "The code is invalid." : "Unauthorized";
+        }
+          let prompt = this.alertCtrl.create({
+            title: title,
+            message: message,
+            buttons: [
+              {
+                text: 'Ok',
+                handler: data => {}
+              }
+            ]
+          });
+          prompt.present();
+          this.loader.dismiss();
+      })
+    }).catch((err)=>{});
+
+  }
+
+  private verify2FA():Promise<any>{
+    return new Promise((resolve, reject) => {
+      if(this.ballot.Requires2FA){
+        this.voteService.sendSMSCode("+16788965681").then((resp) =>{
+          let prompt = this.alertCtrl.create({
+            title: 'Enter Two-Factor Code',
+            message: "Enter code from SMS",
+            inputs: [
+              {
+                name: 'code',
+                placeholder: 'Code'
+              },
+            ],
+            buttons: [
+              {
+                text: 'Cancel',
+                handler: data => {
+                  reject();
+                }
+              },
+              {
+                text: 'Send',
+                handler: data => {
+                  resolve(data.code);
+                }
+              }
+            ]
+          });
+          prompt.present();
+        });
+      }else{
+        resolve(null)
+      }
     });
-    this.loader.present();
-
-    let voterDecisions = this.getDecisionScores();
-
-    this.voteService.castVote({
-      ballotId: this.ballotId,
-      decisions: voterDecisions
-    }).then((result) => {
-      setTimeout(() => {
-        this.loader.dismiss();
-        this.navCtrl.setRoot(VoterBallotListPage)
-      }, 3000);
-    })
   }
 
 

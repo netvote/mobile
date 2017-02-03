@@ -133,25 +133,90 @@ export class ManageBallotsPage {
     })
   }
 
-  openNewBallot(){
+  private createBallot(ballot){
     let loader = this.loadingCtrl.create({
       spinner: "crescent",
       content: "creating ballot..."
     });
     loader.present();
-    let ballot = this.getMockBallot();
     this.voteService.createBallot(ballot).then((result) => {
       loader.dismiss();
       this.navCtrl.setRoot(ManageBallotsPage)
     })
   }
 
-  private getMockBallot(){
+  openNewBallot(){
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Ballot Options',
+      buttons: [
+        {
+          text: 'One-Time',
+          handler: () => {
+            this.createBallot(this.getMockBallot(false))
+          }
+        },{
+          text: 'One-Time 2FA',
+          handler: () => {
+            this.createBallot(this.getMockBallot(true))
+          }
+        },{
+          text: 'Repeatable',
+          handler: () => {
+            this.createBallot(this.getMockRepeatableBallot())
+          }
+        },{
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {}
+        }
+      ]
+    });
+    actionSheet.present();
+  }
+
+  private getMockRepeatableBallot(){
+    return {
+      "Ballot": {
+        "Name": "Repeatable Election",
+        "Description": "This is for demoing repeats. You may vote every 10 secs.",
+        "Requires2FA": false,
+        "Attributes":{
+          "Image": "http://www.biologicaldiversity.org/news/press_releases/2016/images/BaldEagle_RobinSilver.jpg"
+        }
+      },
+      "Decisions": [{
+        "Name": "What is your favorite color?",
+        "Options": [{
+          "Id": "red",
+          "Name": "Red"
+        }, {
+          "Id": "blue",
+          "Name": "Blue"
+        },{
+          "Id": "green",
+          "Name": "Green"
+        }]
+      }, {
+        "Name": "What is your favorite beer?",
+        "Repeatable": true,
+        "RepeatVoteDelaySeconds": 10,
+        "Options": [{
+          "Id": "ipa",
+          "Name": "IPA"
+        }, {
+          "Id": "pils",
+          "Name": "Pilsner"
+        }]
+      }]
+    };
+  }
+
+  private getMockBallot(has2Factor){
     return {
       "Ballot": {
         "Name": "Test Election",
-        "Description": "This is for demoing basic functionality.",
-        "Requires2FA": false,
+        "Description": "This is for demoing basic functionality.  Two-Factor-Auth="+has2Factor,
+        "Requires2FA": has2Factor,
         "Attributes":{
           "Image": "http://www.biologicaldiversity.org/news/press_releases/2016/images/BaldEagle_RobinSilver.jpg"
         }
