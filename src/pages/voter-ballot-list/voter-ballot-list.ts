@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {NavController, LoadingController} from 'ionic-angular';
+import {NavController, LoadingController, ActionSheetController, AlertController} from 'ionic-angular';
 import { VoteService } from "../../providers/vote.service";
 import { VoterBallotPage } from "../voter-ballot/voter-ballot";
 import {BarcodeScanner} from "ionic-native";
@@ -19,7 +19,7 @@ export class VoterBallotListPage {
 
   ballots: any = [];
 
-  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public voteService: VoteService) {}
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController,  public actionSheetCtrl: ActionSheetController, public voteService: VoteService, public alertCtrl: AlertController) {}
 
 
   doRefresh(refresher){
@@ -46,6 +46,55 @@ export class VoterBallotListPage {
     }).catch((err) => {
       console.error(err);
     })
+  }
+
+  add(){
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Add Ballot',
+      buttons: [
+        {
+          icon: "qr-scanner",
+          text: 'Scan QR Code',
+          handler: () => {
+            this.scan()
+          }
+        },{
+          icon: 'add',
+          text: 'Enter Code',
+          handler: () => {
+            let prompt = this.alertCtrl.create({
+              title: 'Enter Ballot Code',
+              message: "Enter the ballot code",
+              inputs: [
+                {
+                  name: 'ballotId',
+                  placeholder: 'Ballot Code'
+                },
+              ],
+              buttons: [
+                {
+                  text: 'Cancel',
+                  handler: data => {
+                  }
+                },
+                {
+                  text: 'Add',
+                  handler: data => {
+                    this.openBallot(data.ballotId);
+                  }
+                }
+              ]
+            });
+            prompt.present();
+          }
+        },{
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {}
+        }
+      ]
+    });
+    actionSheet.present();
   }
 
   scan(){

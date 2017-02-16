@@ -45,10 +45,8 @@
             You have no ballots.
         </ion-card-header>
     </ion-card>
-</ion-content>
 
-<ion-footer>
-    <ion-toolbar>
-        <button ion-button clear block (click)="scan()">Scan QR</button>
-    </ion-toolbar>
-</ion-footer>
+    <ion-fab right bottom>
+        <button ion-fab mini (click)="add()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+</ion-content>

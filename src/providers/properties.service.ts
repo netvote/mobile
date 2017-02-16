@@ -4,7 +4,7 @@ export let _USER_POOL_ID = "us-east-1_tOAOIzQcp";
 export let _CLIENT_ID = "705a98srru2f5iv2lij0eudkqp";
 export let _MOBILE_ANALYTICS_APP_ID = "105c6b299fd84a57805277fd570d5541";
 export let _NETVOTE_API_ENDPOINT = {
-  "mock": "https://ic2k163wu0.execute-api.us-east-1.amazonaws.com/mock",
+  "mock": "https://e3uo8d0svk.execute-api.us-east-1.amazonaws.com/mock",
   "dev": "https://bzz4vagm4a.execute-api.us-east-1.amazonaws.com/netvote_mobile_dev",
   "prod": ""
 };
@@ -12,7 +12,7 @@ export let _NETVOTE_API_ENDPOINT = {
 export let _NETVOTE_API_KEY = "Z9dciRQ98WaCdetgR0Aup4QVpHZjSGHg7xwdj05A";
 
 //todo: pass this in somehow
-export let _ENV_NAME = "dev";
+export let _ENV_NAME = "mock";
 
 export let _POOL_DATA = {
   UserPoolId: _USER_POOL_ID,

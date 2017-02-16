@@ -58,10 +58,8 @@
     </ion-row>
   </ion-card>
 
-</ion-content>
+  <ion-fab right bottom>
+    <button ion-fab mini (click)="openNewBallot()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
 
-<ion-footer>
-  <ion-toolbar>
-    <button ion-button clear block (click)="openNewBallot()">Create Ballot</button>
-  </ion-toolbar>
-</ion-footer>
+</ion-content>

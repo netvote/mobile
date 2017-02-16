@@ -25,7 +25,6 @@ import {VoterBallotPage} from "../pages/voter-ballot/voter-ballot";
 import {ManageBallotsPage} from "../pages/manage-ballots/manage-ballots";
 import {BallotResultsPage} from "../pages/ballot-results/ballot-results";
 
-
 @NgModule({
   declarations: [
     MyApp,

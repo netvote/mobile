@@ -186,7 +186,6 @@ export class VoteService {
                             console.error("http error: "+key+":"+error[key]);
                         }
                     }
-                    console.error("ERROR: "+error.message);
                     reject(error);
                 });
             });
