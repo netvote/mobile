@@ -55,15 +55,15 @@ export class LoginComponent implements LoggedInCallback {
       spinner: "crescent",
       content: "signing in..."
     });
-    loader.present();
-
-    this.userService.authenticate(this.email, this.password).then((result) => {
-      loader.dismiss();
-      this.loggedInHandler();
-    }).catch((err) => {
-      loader.dismiss();
-      this.doAlert("Error", err.message);
-      console.log("result: " + err.message);
+    loader.present().then(()=>{
+      this.userService.authenticate(this.email, this.password).then((result) => {
+        loader.dismiss();
+        this.loggedInHandler();
+      }).catch((err) => {
+        loader.dismiss();
+        this.doAlert("Error", err.message);
+        console.log("result: " + err.message);
+      });
     });
   }
 
