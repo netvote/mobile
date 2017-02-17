@@ -14,14 +14,21 @@
 
 
 <ion-content padding>
-  <ion-list>
-    <ion-item *ngFor="let decision of decisions;" [hidden]="decisions.length == 0">
-      <ion-label>{{ decision.Name }}</ion-label>
-      <ion-select [(ngModel)]="voterDecisions[decision.Id]" cancelText="Cancel" okText="Ok">
-        <ion-option *ngFor="let opt of decision.Options" value="{{opt.Id}}">{{ opt.Name }}</ion-option>
-      </ion-select>
-    </ion-item>
-  </ion-list>
+
+  <ion-card *ngFor="let decision of decisions;" [hidden]="decisions.length == 0">
+    <ion-card-content>
+      <ion-card-title>
+        {{ decision.Name }}
+      </ion-card-title>
+    </ion-card-content>
+    <ion-list radio-group [(ngModel)]="voterDecisions[decision.Id]" >
+      <ion-item *ngFor="let opt of decision.Options">
+        <ion-label>{{opt.Name}}</ion-label>
+        <ion-radio value="{{opt.Id}}" ></ion-radio>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
   <button ion-button (click)="castVote()" [hidden]="decisions.length == 0" [disabled]="isVoteDisabled()" block>
     Cast Vote
   </button>

@@ -9,10 +9,11 @@ export let _NETVOTE_API_ENDPOINT = {
   "prod": ""
 };
 
-export let _NETVOTE_API_KEY = "Z9dciRQ98WaCdetgR0Aup4QVpHZjSGHg7xwdj05A";
+// MOCK export let _NETVOTE_API_KEY = "Z9dciRQ98WaCdetgR0Aup4QVpHZjSGHg7xwdj05A";
+export let _NETVOTE_API_KEY = "YRJPLNqTZW4cE71Ko41Us3lps3HqQwEU8omTRBwv"
 
 //todo: pass this in somehow
-export let _ENV_NAME = "mock";
+export let _ENV_NAME = "dev";
 
 export let _POOL_DATA = {
   UserPoolId: _USER_POOL_ID,

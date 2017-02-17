@@ -177,35 +177,26 @@ export class ManageBallotsPage {
   private getMockRepeatableBallot(){
     return {
       "Ballot": {
-        "Name": "Repeatable Election",
-        "Description": "This is for demoing repeats. You may vote every 10 secs.",
+        "Name": "MLB All Star Ballot",
+        "Description": "You may vote every 10 seconds for your MLB pick",
         "Requires2FA": false,
         "Attributes":{
-          "Image": "http://www.biologicaldiversity.org/news/press_releases/2016/images/BaldEagle_RobinSilver.jpg"
+          "Image": "https://upload.wikimedia.org/wikipedia/en/6/69/Mlb-asg-2017.png"
         }
       },
       "Decisions": [{
-        "Name": "What is your favorite color?",
-        "Options": [{
-          "Id": "red",
-          "Name": "Red"
-        }, {
-          "Id": "blue",
-          "Name": "Blue"
-        },{
-          "Id": "green",
-          "Name": "Green"
-        }]
-      }, {
-        "Name": "What is your favorite beer?",
+        "Name": "Who is your pick?",
         "Repeatable": true,
         "RepeatVoteDelaySeconds": 10,
         "Options": [{
-          "Id": "ipa",
-          "Name": "IPA"
+          "Id": "john",
+          "Name": "John"
         }, {
-          "Id": "pils",
-          "Name": "Pilsner"
+          "Id": "chris",
+          "Name": "Chris"
+        },{
+          "Id": "sam",
+          "Name": "Sam"
         }]
       }]
     };
@@ -214,33 +205,36 @@ export class ManageBallotsPage {
   private getMockBallot(has2Factor){
     return {
       "Ballot": {
-        "Name": "Test Election",
-        "Description": "This is for demoing basic functionality.  Two-Factor-Auth="+has2Factor,
+        "Name": "Beer Choices",
+        "Description": "Help us pick your beer."+(has2Factor? " This requires 2FA." : ""),
         "Requires2FA": has2Factor,
         "Attributes":{
-          "Image": "http://www.biologicaldiversity.org/news/press_releases/2016/images/BaldEagle_RobinSilver.jpg"
+          "Image": "https://rafflecreator.s3.amazonaws.com/2b3fc509-82bb-4d03-8d47-cfe0bd0bba3c.jpg"
         }
       },
       "Decisions": [{
-        "Name": "What is your favorite color?",
+        "Name": "What is your favorite beer color?",
         "Options": [{
           "Id": "red",
           "Name": "Red"
         }, {
-          "Id": "blue",
-          "Name": "Blue"
+          "Id": "gold",
+          "Name": "Gold"
         },{
-          "Id": "green",
-          "Name": "Green"
+          "Id": "brown",
+          "Name": "Brown"
         }]
       }, {
-        "Name": "What is your favorite beer?",
+        "Name": "Do you like hops?",
         "Options": [{
-          "Id": "ipa",
-          "Name": "IPA"
+          "Id": "yes",
+          "Name": "Yes"
         }, {
-          "Id": "pils",
-          "Name": "Pilsner"
+          "Id": "no",
+          "Name": "No"
+        }, {
+          "Id": "sometimes",
+          "Name": "Sometimes"
         }]
       }]
     };
