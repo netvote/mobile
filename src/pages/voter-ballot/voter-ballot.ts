@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {NavController, NavParams, LoadingController, Loading, AlertController} from 'ionic-angular';
 import {VoteService} from "../../providers/vote.service";
-import {VoterBallotListPage} from "../voter-ballot-list/voter-ballot-list";
 /*
   Generated class for the VoterBallot page.
 
@@ -43,7 +42,7 @@ export class VoterBallotPage {
             {
               text: 'Ok',
               handler: data => {
-                this.navCtrl.setRoot(VoterBallotListPage)
+                this.gotoVoterBallotList();
               }
             }
           ]
@@ -53,6 +52,23 @@ export class VoterBallotPage {
         this.decisions = decisions;
         this.loader.dismiss();
         console.log("loaded ballots: " + this.decisions);
+      }
+    }).catch((err) => {
+      if(err.status == 404){
+        this.loader.dismiss();
+        let prompt = this.alertCtrl.create({
+          title: 'Ballot not available',
+          message: "This ballot is not available.",
+          buttons: [
+            {
+              text: 'Ok',
+              handler: data => {
+                this.gotoVoterBallotList();
+              }
+            }
+          ]
+        });
+        prompt.present();
       }
     })
   }
@@ -91,7 +107,7 @@ export class VoterBallotPage {
       }, code).then((result) => {
         setTimeout(() => {
           this.loader.dismiss();
-          this.navCtrl.setRoot(VoterBallotListPage)
+          this.gotoVoterBallotList();
         }, 3000);
       }).catch((err)=>{
         let title = "Error";
@@ -114,6 +130,10 @@ export class VoterBallotPage {
       })
     }).catch((err)=>{});
 
+  }
+
+  private gotoVoterBallotList(){
+    this.navCtrl.popToRoot();
   }
 
   private verify2FA():Promise<any>{

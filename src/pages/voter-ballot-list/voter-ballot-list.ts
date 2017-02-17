@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
-import {NavController, LoadingController, ActionSheetController, AlertController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {
+  NavController, LoadingController, ActionSheetController, AlertController, NavParams,
+  Searchbar
+} from 'ionic-angular';
 import { VoteService } from "../../providers/vote.service";
 import { VoterBallotPage } from "../voter-ballot/voter-ballot";
 import {BarcodeScanner} from "ionic-native";
@@ -17,14 +20,23 @@ import {BarcodeScanner} from "ionic-native";
 })
 export class VoterBallotListPage {
 
-  ballots: any = [];
+  @ViewChild(Searchbar) searchBar;
 
-  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController,  public actionSheetCtrl: ActionSheetController, public voteService: VoteService, public alertCtrl: AlertController) {}
+  ballots: any = [];
+  filteredBallots: any = [];
+  searchText: string = null;
+  ballotId: string = null;
+  loader: any;
+
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController,  public actionSheetCtrl: ActionSheetController, public navParam:NavParams, public voteService: VoteService, public alertCtrl: AlertController) {
+    this.ballotId = this.navParam.get("ballotId");
+  }
 
 
   doRefresh(refresher){
     this.voteService.getVoterBallots().then((ballots) => {
       this.ballots = ballots;
+      this.filterBallotsByString(this.searchBar.value);
       refresher.complete();
       console.log("loaded ballots: "+this.ballots);
     }).catch((err) => {
@@ -32,20 +44,96 @@ export class VoterBallotListPage {
     })
   }
 
-  ionViewDidLoad() {
-    let loader = this.loadingCtrl.create({
+  filterBallots(ev: any) {
+    this.filterBallotsByString(ev.target.value);
+  }
+
+  private filterBallotsByString(val: string){
+    if(val && val.trim()) {
+      this.filteredBallots = this.ballots.filter((b) => {
+        return (b.Name+b.Description).toLowerCase().indexOf(val.trim().toLowerCase()) > -1;
+      });
+    }else{
+      this.filteredBallots = this.ballots;
+    }
+  }
+
+  private initBallotListPage(){
+    this.loader = this.loadingCtrl.create({
       spinner: "crescent",
       content: "loading ballots..."
     });
-    loader.present();
-    console.log('Hello VoterBallotListPage Page');
-    this.voteService.getVoterBallots().then((ballots) => {
-      this.ballots = ballots;
-      loader.dismiss();
-      console.log("loaded ballots: "+this.ballots);
-    }).catch((err) => {
-      console.error(err);
+    this.loader.present();
+    this.loadBallot().then((ballotName)=>{
+      this.voteService.getVoterBallots().then((ballots) => {
+        this.ballots = ballots;
+        if(ballotName) {
+          this.searchBar.value = ballotName;
+          this.filterBallotsByString(ballotName)
+        }else{
+          this.searchBar.value = "";
+          this.filteredBallots = ballots;
+        }
+        this.loader.dismiss();
+        console.log("loaded ballots: "+this.ballots);
+      }).catch((err) => {
+        console.error(err);
+      })
     })
+  }
+
+  ionViewDidEnter() {
+    this.initBallotListPage();
+  }
+
+  loadBallot(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if(this.ballotId == null){
+        resolve(null);
+      }else{
+        this.voteService.getVoterBallot(this.ballotId).then((ballot) => {
+          this.ballotId = null;
+          if(ballot.Decisions.length == 0){
+            this.loader.dismiss();
+
+            let prompt = this.alertCtrl.create({
+              title: 'Already Voted',
+              message: "You have already voted for this ballot. Thanks!",
+              buttons: [
+                {
+                  text: 'Ok',
+                  handler: data => {
+                    resolve(null)
+                  }
+                }
+              ]
+            });
+            prompt.present();
+          }else{
+            resolve(ballot.Ballot.Name)
+          }
+        }).catch((err) => {
+          if(err.status == 404){
+            this.loader.dismiss();
+            let prompt = this.alertCtrl.create({
+              title: 'Ballot not available',
+              message: "This ballot is not available.",
+              buttons: [
+                {
+                  text: 'Ok',
+                  handler: data => {
+                    resolve(null)
+                  }
+                }
+              ]
+            });
+            prompt.present();
+          }else {
+            reject(err);
+          }
+        });
+      }
+    });
   }
 
   add(){
@@ -80,7 +168,8 @@ export class VoterBallotListPage {
                 {
                   text: 'Add',
                   handler: data => {
-                    this.openBallot(data.ballotId);
+                    this.ballotId = data.ballotId;
+                    this.initBallotListPage();
                   }
                 }
               ]
@@ -102,7 +191,8 @@ export class VoterBallotListPage {
       console.log("barcode = "+JSON.stringify(barcodeData));
       if(barcodeData && barcodeData.text) {
         var ballotId = barcodeData.text.substring(barcodeData.text.lastIndexOf("/") + 1);
-        this.openBallot(ballotId);
+        this.ballotId = ballotId;
+        this.initBallotListPage();
       }
     }, (err) => {
       console.error("bardcode error: "+err);

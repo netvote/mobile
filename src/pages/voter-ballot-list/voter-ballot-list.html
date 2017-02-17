@@ -7,20 +7,28 @@
 <ion-header>
 
     <ion-navbar>
+        <ion-buttons left>
+            <button ion-button icon-only menuToggle>
+                <ion-icon name="menu"></ion-icon>
+            </button>
+        </ion-buttons>
         <ion-title>Ballots</ion-title>
-        <button ion-button menuToggle>
-            <ion-icon name="menu"></ion-icon>
-        </button>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="add()" >
+                <ion-icon name="add"></ion-icon>
+            </button>
+        </ion-buttons>
     </ion-navbar>
 
 </ion-header>
 
 
-<ion-content class="card-background-page">
+<ion-content (click)="{}" class="card-background-page">
+    <ion-searchbar (ionInput)="filterBallots($event)"></ion-searchbar>
     <ion-refresher (ionRefresh)="doRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    <ion-card *ngFor="let ballot of ballots" [hidden]="ballots.length == 0">
+    <ion-card *ngFor="let ballot of filteredBallots" [hidden]="ballots.length == 0">
         <ion-card-content>
             <img src="{{ ballot.Attributes.Image }}" [hidden]="ballot.Attributes.Image == null || ballot.Attributes.Image == ''"/>
 
@@ -46,7 +54,4 @@
         </ion-card-header>
     </ion-card>
 
-    <ion-fab right bottom>
-        <button ion-fab (click)="add()"><ion-icon name="add"></ion-icon></button>
-    </ion-fab>
 </ion-content>

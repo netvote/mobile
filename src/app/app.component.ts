@@ -6,8 +6,6 @@ import {AwsUtil} from "../providers/aws.service";
 import {VoterBallotListPage} from "../pages/voter-ballot-list/voter-ballot-list";
 import {ManageBallotsPage} from "../pages/manage-ballots/manage-ballots";
 import {UserLoginService} from "../providers/cognito.service";
-import {VoterBallotPage} from "../pages/voter-ballot/voter-ballot";
-
 
 @Component({
   templateUrl: 'app.html'
@@ -18,7 +16,6 @@ export class MyApp {
   public loginPage = LoginComponent;
   public homePage = VoterBallotListPage;
   public logoutPage = LogoutComponent;
-  public settingsPage = VoterBallotListPage;
   public manageBallots = ManageBallotsPage;
 
   public rootPage:any;
@@ -55,14 +52,14 @@ export class MyApp {
     console.log("MyApp: ngAfterViewInit called");
     this.platform.ready().then(() => {
       Deeplinks.routeWithNavController(this.navCtrl, {
-        '/ballot/:ballotId': VoterBallotPage
+        '/ballot/:ballotId': VoterBallotListPage
       }).subscribe((match) => {
         console.log('Successfully matched route route=', JSON.stringify(match));
 
         var ballotId = match.$link.path.substring(1);
         console.log("deep loading ballot: "+ballotId);
         if(this.navCtrl != undefined) {
-          this.navCtrl.setRoot(VoterBallotPage, {"ballotId": ballotId});
+          this.navCtrl.setRoot(VoterBallotListPage, {"ballotId": ballotId});
         }else{
           console.error("this.nav is undefined!")
         }
@@ -78,7 +75,7 @@ export class MyApp {
     // Reset the nav controller to have just this page
     // we wouldn't want the back button to show in this scenario
     console.log("setting page to "+(typeof page));
-    this.rootPage = page;
+    this.navCtrl.setRoot(page);
 
     // close the menu when clicking a link from the menu
     this.menu.close();

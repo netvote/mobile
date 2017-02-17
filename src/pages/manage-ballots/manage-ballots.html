@@ -7,10 +7,17 @@
 <ion-header>
 
   <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>Manage Ballots</ion-title>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="openNewBallot()" >
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -57,9 +64,5 @@
       </ion-col>
     </ion-row>
   </ion-card>
-
-  <ion-fab right bottom>
-    <button ion-fab (click)="openNewBallot()"><ion-icon name="add"></ion-icon></button>
-  </ion-fab>
 
 </ion-content>
